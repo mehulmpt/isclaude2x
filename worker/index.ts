@@ -86,11 +86,18 @@ function formatTimeInTz(ts: number, tz: string): string | null {
 	}
 }
 
-function etDayName(ts: number): string {
-	return new Date(ts).toLocaleDateString("en-US", {
-		timeZone: "America/New_York",
-		weekday: "long",
-	})
+function dayNameInTz(ts: number, tz: string): string {
+	try {
+		return new Date(ts).toLocaleDateString("en-US", {
+			timeZone: tz,
+			weekday: "long",
+		})
+	} catch {
+		return new Date(ts).toLocaleDateString("en-US", {
+			timeZone: "UTC",
+			weekday: "long",
+		})
+	}
 }
 
 // ── Worker ──────────────────────────────────────────────
@@ -124,7 +131,8 @@ export default {
 				promoPeriod: "March 13\u201327, 2026",
 				currentTimeET: formatTimeInTz(now, "America/New_York"),
 				currentTimeUser: formatTimeInTz(now, userTz),
-				currentDay: etDayName(now),
+				currentDayET: dayNameInTz(now, "America/New_York"),
+				currentDayUser: dayNameInTz(now, userTz),
 				userTimezone: userTz,
 				timestamp: new Date(now).toISOString(),
 				"2xWindowExpiresInSeconds": status.is2x ? countdown.seconds : null,

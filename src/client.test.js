@@ -302,6 +302,27 @@ describe("client getETProgress", () => {
 })
 
 // ──────────────────────────────────────────────────────────
+// getDayName
+// ──────────────────────────────────────────────────────────
+describe("client getDayName", () => {
+	it("returns ET day name in ET timezone", () => {
+		// Monday March 16, 14:00 UTC = 10 AM ET Monday
+		expect(getDayName(utc("2026-03-16T14:00:00"), "America/New_York")).toBe("Monday")
+	})
+
+	it("returns IST day when ET day differs", () => {
+		// Monday March 16, 02:00 UTC = Sunday 10 PM ET but Monday 7:30 AM IST
+		expect(getDayName(utc("2026-03-16T02:00:00"), "Asia/Kolkata")).toBe("Monday")
+		expect(getDayName(utc("2026-03-16T02:00:00"), "America/New_York")).toBe("Sunday")
+	})
+
+	it("returns correct day in Pacific timezone", () => {
+		// Sunday March 15, 06:00 UTC = Saturday 11 PM PT
+		expect(getDayName(utc("2026-03-15T06:00:00"), "America/Los_Angeles")).toBe("Saturday")
+	})
+})
+
+// ──────────────────────────────────────────────────────────
 // formatTzName
 // ──────────────────────────────────────────────────────────
 describe("client formatTzName", () => {

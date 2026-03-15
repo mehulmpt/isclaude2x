@@ -120,6 +120,14 @@ function getETDayName(ts) {
 	}).format(new Date(ts))
 }
 
+/** Get weekday name in a given timezone (e.g. "Monday") */
+function getDayName(ts, tz) {
+	return new Intl.DateTimeFormat("en-US", {
+		timeZone: tz,
+		weekday: "long",
+	}).format(new Date(ts))
+}
+
 /** Get progress through a day in a given timezone as 0–1 fraction */
 function getDayProgress(ts, tz) {
 	const parts = new Intl.DateTimeFormat("en-US", {
@@ -179,7 +187,7 @@ function formatTzName(tz) {
 if (typeof globalThis !== "undefined") {
 	Object.assign(globalThis, {
 		getStatus, getCountdown, formatCountdown,
-		formatTime, getETDayName, getETProgress,
+		formatTime, getETDayName, getDayName, getETProgress,
 		getDayProgress, getPeakFractions, formatHourInTz,
 		formatTzName, isWeekendET, findNextWeekdayPeakStart,
 		PROMO_START, PROMO_END, PEAK_START_UTC, PEAK_END_UTC,
@@ -207,6 +215,7 @@ if (typeof document !== "undefined") {
 		const cd = getCountdown(ts)
 		const progress = getDayProgress(ts, tz)
 		const etDay = getETDayName(ts)
+		const localDay = getDayName(ts, tz)
 		const peak = getPeakFractions(tz)
 		const isInactive = st.promoNotStarted || st.promoEnded
 
@@ -235,7 +244,7 @@ if (typeof document !== "undefined") {
 				: "Standard usage right now"
 
 			if (st.isWeekend) {
-				$("hero-reason").textContent = "2x all day on weekends"
+				$("hero-reason").textContent = "2x all day \u2014 weekend in ET"
 			} else if (st.is2x) {
 				$("hero-reason").textContent = "Off-peak hours (outside 8\u202fAM\u20132\u202fPM ET)"
 			} else {
@@ -255,8 +264,8 @@ if (typeof document !== "undefined") {
 
 			$("timeline-section").hidden = false
 			$("timeline-title").textContent = st.isWeekend
-				? etDay + " (weekend)"
-				: etDay + " \u2014 peak: " + peakStartLabel + "\u2013" + peakEndLabel
+				? localDay + (localDay !== etDay ? " \u2014 weekend in ET (" + etDay + ")" : " (weekend in ET)")
+				: localDay + " \u2014 peak: " + peakStartLabel + "\u2013" + peakEndLabel
 			$("timeline-marker").style.left = (progress * 100).toFixed(2) + "%"
 			$("timeline-weekday").hidden = st.isWeekend
 			$("timeline-weekend").hidden = !st.isWeekend
