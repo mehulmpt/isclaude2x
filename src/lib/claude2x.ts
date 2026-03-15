@@ -8,7 +8,7 @@ dayjs.extend(timezone)
 // Promotion: March 13–27, 2026
 // DST starts March 8, 2026 — ET = EDT (UTC-4) for entire promo
 export const PROMO_START = dayjs.utc("2026-03-13 04:00:00") // March 13 00:00 EDT
-export const PROMO_END = dayjs.utc("2026-03-28 04:00:00") // end of March 27 EDT
+export const PROMO_END = dayjs.utc("2026-03-28 06:59:00") // March 27 11:59 PM PDT
 
 // Peak hours (weekdays only): 5–11 AM PT / 8 AM–2 PM ET / 12:00–18:00 UTC
 export const PEAK_START_UTC = 12

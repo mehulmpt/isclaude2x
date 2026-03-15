@@ -3,7 +3,7 @@
 
 // ── Promotion constants ─────────────────────────────────
 const PROMO_START = new Date("2026-03-13T04:00:00Z").getTime()
-const PROMO_END = new Date("2026-03-28T04:00:00Z").getTime()
+const PROMO_END = new Date("2026-03-28T06:59:00Z").getTime()
 const PEAK_START_UTC = 12 // 8 AM EDT
 const PEAK_END_UTC = 18 // 2 PM EDT
 

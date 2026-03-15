@@ -261,14 +261,6 @@ a:hover {
 	color: var(--text-muted);
 	white-space: nowrap;
 }
-.timeline-labels span:first-child {
-	transform: none;
-}
-.timeline-labels span:last-child {
-	transform: none;
-	left: auto !important;
-	right: 0;
-}
 .timeline-legend {
 	display: flex;
 	justify-content: center;

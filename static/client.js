@@ -5,7 +5,7 @@
 // ── Promotion constants ─────────────────────────────────
 // March 13–27, 2026 in EDT (UTC-4)
 const PROMO_START = 1773374400000 // 2026-03-13T04:00:00Z (midnight EDT)
-const PROMO_END = 1774670400000 // 2026-03-28T04:00:00Z (end of March 27 EDT)
+const PROMO_END = 1774681140000 // 2026-03-28T06:59:00Z (March 27 11:59 PM PDT)
 const PEAK_START_UTC = 12 // 8 AM EDT
 const PEAK_END_UTC = 18 // 2 PM EDT
 
@@ -282,15 +282,46 @@ if (typeof document !== "undefined") {
 				const segs = $("timeline-weekday").children
 				const peakStart = peak.start * 100
 				const peakEnd = peak.end * 100
-				segs[0].style.width = peakStart + "%"
-				segs[1].style.width = (peakEnd - peakStart) + "%"
-				segs[2].style.width = (100 - peakEnd) + "%"
+				const wraps = peakEnd < peakStart // peak crosses midnight
+
+				if (wraps) {
+					// [peak][2x][peak] — peak spans midnight
+					segs[0].className = "timeline-segment segment-peak"
+					segs[0].style.width = peakEnd + "%"
+					segs[1].className = "timeline-segment segment-2x"
+					segs[1].style.width = (peakStart - peakEnd) + "%"
+					segs[2].className = "timeline-segment segment-peak"
+					segs[2].style.width = (100 - peakStart) + "%"
+				} else {
+					// [2x][peak][2x] — normal day
+					segs[0].className = "timeline-segment segment-2x"
+					segs[0].style.width = peakStart + "%"
+					segs[1].className = "timeline-segment segment-peak"
+					segs[1].style.width = (peakEnd - peakStart) + "%"
+					segs[2].className = "timeline-segment segment-2x"
+					segs[2].style.width = (100 - peakEnd) + "%"
+				}
 
 				const labels = $("timeline-labels-weekday").children
-				labels[0].style.left = peakStart + "%"
-				labels[0].textContent = peakStartLabel
-				labels[1].style.left = peakEnd + "%"
-				labels[1].textContent = peakEndLabel
+				for (let i = 0; i < 2; i++) {
+					const pos = i === 0 ? peakStart : peakEnd
+					const label = labels[i]
+					label.textContent = i === 0 ? peakStartLabel : peakEndLabel
+					// Clamp labels at edges to prevent overflow
+					if (pos < 10) {
+						label.style.left = pos + "%"
+						label.style.right = ""
+						label.style.transform = "none"
+					} else if (pos > 90) {
+						label.style.left = ""
+						label.style.right = "0"
+						label.style.transform = "none"
+					} else {
+						label.style.left = pos + "%"
+						label.style.right = ""
+						label.style.transform = "translateX(-50%)"
+					}
+				}
 			}
 			$("promo-period").hidden = true
 		}

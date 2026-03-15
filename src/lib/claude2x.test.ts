@@ -128,11 +128,11 @@ describe("getStatus", () => {
 		})
 
 		it("just before promo end", () => {
-			expect(getStatus(dayjs.utc("2026-03-28 03:59:59")).promoActive).toBe(true)
+			expect(getStatus(dayjs.utc("2026-03-28 06:58:59")).promoActive).toBe(true)
 		})
 
 		it("just after promo end", () => {
-			expect(getStatus(dayjs.utc("2026-03-28 04:00:01")).promoEnded).toBe(true)
+			expect(getStatus(dayjs.utc("2026-03-28 06:59:01")).promoEnded).toBe(true)
 		})
 	})
 
@@ -314,14 +314,14 @@ describe("getStatus", () => {
 			expect(s.isPeak).toBe(true)
 		})
 
-		it("last 2x of promo (March 27 11:59 PM ET = 03:59 UTC March 28)", () => {
-			const s = getStatus(dayjs.utc("2026-03-28 03:59:59"))
+		it("last 2x of promo (March 27 11:59 PM PDT = 06:58 UTC March 28)", () => {
+			const s = getStatus(dayjs.utc("2026-03-28 06:58:59"))
 			expect(s.promoActive).toBe(true)
 			expect(s.is2x).toBe(true)
 		})
 
-		it("promo over at midnight ET March 28 (04:00 UTC March 28)", () => {
-			const s = getStatus(dayjs.utc("2026-03-28 04:00:00"))
+		it("promo over at 11:59 PM PDT March 27 (06:59 UTC March 28)", () => {
+			const s = getStatus(dayjs.utc("2026-03-28 06:59:00"))
 			// Exactly at PROMO_END — isAfter(START) && isBefore(END) => isBefore is false
 			expect(s.promoActive).toBe(false)
 			expect(s.promoEnded).toBe(true)
@@ -454,7 +454,7 @@ describe("getCountdown", () => {
 
 		it("caps at promo end on last day", () => {
 			// Thursday March 27, 20:00 UTC — next peak would be Fri March 28, 12:00 UTC
-			// but promo ends March 28, 04:00 UTC
+			// but promo ends March 28, 06:59 UTC
 			const now = dayjs.utc("2026-03-27 20:00:00")
 			const cd = getCountdown(now)
 			expect(cd.label).toBe("Promotion ends")
@@ -580,12 +580,12 @@ describe("getCountdown", () => {
 			const now = dayjs.utc("2026-03-27 18:00:00")
 			const cd = getCountdown(now)
 			expect(cd.label).toBe("Promotion ends")
-			// Promo ends at March 28 04:00 UTC = 10 hours
-			expect(cd.seconds).toBe(10 * 3600)
+			// Promo ends at March 28 06:59 UTC = 12h 59m = 46740s
+			expect(cd.seconds).toBe(12 * 3600 + 59 * 60)
 		})
 
-		it("March 27, 03:59:59 UTC (last second of promo, 11:59 PM ET)", () => {
-			const now = dayjs.utc("2026-03-28 03:59:59")
+		it("March 28, 06:58:59 UTC (last second of promo, 11:58:59 PM PDT)", () => {
+			const now = dayjs.utc("2026-03-28 06:58:59")
 			const cd = getCountdown(now)
 			expect(cd.label).toBe("Promotion ends")
 			expect(cd.seconds).toBe(1)
@@ -596,7 +596,7 @@ describe("getCountdown", () => {
 		const times = [
 			dayjs.utc("2026-03-29 00:00:00"),
 			dayjs.utc("2027-01-01 00:00:00"),
-			dayjs.utc("2026-03-28 04:00:00"),
+			dayjs.utc("2026-03-28 06:59:00"),
 		]
 		for (const t of times) {
 			it(`non-negative at ${t.toISOString()}`, () => {
@@ -817,11 +817,11 @@ describe("constants", () => {
 		expect(PROMO_START.tz("America/New_York").day()).toBe(5) // Friday
 	})
 
-	it("PROMO_END is a Saturday (March 28, 2026 midnight ET = end of Friday)", () => {
-		// PROMO_END = March 28 04:00 UTC = March 28 00:00 ET (Saturday midnight)
-		// But the last valid moment is March 27 (Friday)
+	it("PROMO_END last valid moment is Friday March 27 (11:58:59 PM PDT)", () => {
+		// PROMO_END = March 28 06:59 UTC = March 27 11:59 PM PDT
+		// Last valid moment is 1 second before
 		const lastValid = PROMO_END.subtract(1, "second")
-		expect(lastValid.tz("America/New_York").day()).toBe(5) // Friday
+		expect(lastValid.tz("America/Los_Angeles").day()).toBe(5) // Friday
 	})
 
 	it("peak window is exactly 6 hours", () => {
