@@ -282,15 +282,41 @@ if (typeof document !== "undefined") {
 				const segs = $("timeline-weekday").children
 				const peakStart = peak.start * 100
 				const peakEnd = peak.end * 100
-				segs[0].style.width = peakStart + "%"
-				segs[1].style.width = (peakEnd - peakStart) + "%"
-				segs[2].style.width = (100 - peakEnd) + "%"
+				const wrapped = peakEnd < peakStart
 
+				if (wrapped) {
+					// Peak crosses midnight (e.g. Bangkok: 7 PM - 1 AM)
+					// Bar layout: [peak 0-1AM] [2x 1AM-7PM] [peak 7PM-midnight]
+					segs[0].style.width = peakEnd + "%"
+					segs[1].style.width = (peakStart - peakEnd) + "%"
+					segs[2].style.width = (100 - peakStart) + "%"
+					segs[0].className = "timeline-segment segment-peak"
+					segs[1].className = "timeline-segment segment-2x"
+					segs[2].className = "timeline-segment segment-peak"
+				} else {
+					// Peak fits within a single day (e.g. New York: 8 AM - 2 PM)
+					segs[0].style.width = peakStart + "%"
+					segs[1].style.width = (peakEnd - peakStart) + "%"
+					segs[2].style.width = (100 - peakEnd) + "%"
+					segs[0].className = "timeline-segment segment-2x"
+					segs[1].className = "timeline-segment segment-peak"
+					segs[2].className = "timeline-segment segment-2x"
+				}
+
+				// Position labels at peak boundaries
 				const labels = $("timeline-labels-weekday").children
-				labels[0].style.left = peakStart + "%"
-				labels[0].textContent = peakStartLabel
-				labels[1].style.left = peakEnd + "%"
-				labels[1].textContent = peakEndLabel
+				if (wrapped) {
+					// Left label at 1 AM, right label at 7 PM (chronological on the bar)
+					labels[0].style.left = peakEnd + "%"
+					labels[0].textContent = peakEndLabel
+					labels[1].style.left = peakStart + "%"
+					labels[1].textContent = peakStartLabel
+				} else {
+					labels[0].style.left = peakStart + "%"
+					labels[0].textContent = peakStartLabel
+					labels[1].style.left = peakEnd + "%"
+					labels[1].textContent = peakEndLabel
+				}
 			}
 			$("promo-period").hidden = true
 		}
