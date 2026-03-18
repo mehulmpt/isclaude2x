@@ -182,6 +182,32 @@ function formatTzName(tz) {
 	return (p[p.length - 1] || tz).replace(/_/g, " ")
 }
 
+// ── Dynamic favicon ────────────────────────────────────
+
+/** Generate an SVG favicon that reflects current 2x status */
+function faviconSVG(is2x) {
+	const fill = is2x ? "#10b981" : "#f59e0b"
+	return (
+		'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">' +
+		'<rect width="64" height="64" rx="14" fill="#080b16"/>' +
+		'<text x="32" y="44" text-anchor="middle" font-family="system-ui,sans-serif"' +
+		' font-weight="800" font-size="28" fill="' +
+		fill +
+		'">' +
+		(is2x ? "2x" : "1x") +
+		"</text></svg>"
+	)
+}
+
+/** Update the favicon link element with current status */
+let _lastFaviconIs2x = null
+function updateFavicon(is2x) {
+	if (is2x === _lastFaviconIs2x) return
+	_lastFaviconIs2x = is2x
+	const link = document.getElementById("favicon")
+	if (link) link.href = "data:image/svg+xml," + encodeURIComponent(faviconSVG(is2x))
+}
+
 // ── Expose for testing ──────────────────────────────────
 // When loaded via vitest, these become accessible on globalThis
 if (typeof globalThis !== "undefined") {
@@ -190,6 +216,7 @@ if (typeof globalThis !== "undefined") {
 		formatTime, getETDayName, getDayName, getETProgress,
 		getDayProgress, getPeakFractions, formatHourInTz,
 		formatTzName, isWeekendET, findNextWeekdayPeakStart,
+		faviconSVG,
 		PROMO_START, PROMO_END, PEAK_START_UTC, PEAK_END_UTC,
 	})
 }
@@ -221,6 +248,9 @@ if (typeof document !== "undefined") {
 
 		// Set root status attribute (drives CSS theme: green/amber/gray)
 		$("app").dataset.status = isInactive ? "inactive" : st.is2x ? "yes" : "no"
+
+		// Update favicon to match current status
+		updateFavicon(!isInactive && st.is2x)
 
 		// Simulation indicator (pulsing amber dot next to title)
 		$("sim-dot").hidden = simTime === null
