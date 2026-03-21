@@ -40,6 +40,19 @@ body {
 	display: none !important;
 }
 
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
 code {
 	font-family: "IBM Plex Mono", ui-monospace, monospace;
 	font-size: 0.85em;
@@ -410,6 +423,12 @@ a:hover {
 }
 .debug-close:hover {
 	color: var(--text);
+}
+.debug-close:focus-visible {
+	color: var(--text);
+	outline: 2px solid var(--amber);
+	outline-offset: 2px;
+	border-radius: 4px;
 }
 .debug-controls {
 	display: flex;

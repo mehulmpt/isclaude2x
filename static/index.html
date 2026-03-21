@@ -21,6 +21,7 @@
 	<div class="hero"><span id="hero-answer" class="hero-answer">...</span></div>
 	<p id="hero-subtitle" class="hero-subtitle"></p>
 	<p id="hero-reason" class="hero-reason"></p>
+	<p id="sr-status" class="sr-only" role="status"></p>
 
 	<div id="countdown-block" class="countdown-block">
 		<p id="countdown-label" class="countdown-label"></p>
@@ -82,16 +83,16 @@
 		<span class="debug-badge">DEBUG MODE</span>
 		<div class="debug-header-actions">
 			<button id="debug-live" class="debug-btn debug-btn-live" disabled>Resume Live</button>
-			<button id="debug-close" class="debug-close">&times;</button>
+			<button id="debug-close" class="debug-close" aria-label="Close debug panel">&times;</button>
 		</div>
 	</div>
 	<div class="debug-controls">
 		<div class="debug-field">
-			<label class="debug-label">Date &amp; Time</label>
+			<label class="debug-label" for="debug-date">Date &amp; Time</label>
 			<input id="debug-date" type="datetime-local" class="debug-input" value="2026-03-18T14:00">
 		</div>
 		<div class="debug-field">
-			<label class="debug-label">Timezone</label>
+			<label class="debug-label" for="debug-tz">Timezone</label>
 			<select id="debug-tz" class="debug-input">
 				<option value="America/New_York">New York (America/New_York)</option>
 				<option value="America/Chicago">Chicago (America/Chicago)</option>

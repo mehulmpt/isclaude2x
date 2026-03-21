@@ -229,6 +229,7 @@ if (typeof document !== "undefined") {
 	let simTime = null // null = live, number = frozen timestamp
 	let simTz = null // null = use browser tz, string = override
 	let debugOpen = false
+	let prevStatusKey = null // Track status to announce transitions to screen readers
 
 	const $ = (id) => document.getElementById(id)
 
@@ -354,6 +355,13 @@ if (typeof document !== "undefined") {
 				}
 			}
 			$("promo-period").hidden = true
+		}
+
+		// Announce status changes to screen readers (only on transitions, not every tick)
+		const statusKey = isInactive ? (st.promoNotStarted ? "pre" : "post") : st.is2x ? "2x" : "peak"
+		if (statusKey !== prevStatusKey) {
+			$("sr-status").textContent = $("hero-answer").textContent + ". " + $("hero-subtitle").textContent
+			prevStatusKey = statusKey
 		}
 	}
 
