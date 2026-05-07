@@ -5,9 +5,9 @@
 	<link id="favicon" rel="icon" type="image/svg+xml" href="/favicon.svg">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Is Claude 2x? | isclaude2x.com</title>
-	<meta name="description" content="Check if Claude usage is currently doubled. Live status for the March 2026 2x usage promotion.">
+	<meta name="description" content="Yes — Claude usage is permanently 2x thanks to the SpaceX × Anthropic Colossus 1 compute deal.">
 	<meta property="og:title" content="Is Claude 2x right now?">
-	<meta property="og:description" content="Live status for the Claude March 2026 2x usage promotion.">
+	<meta property="og:description" content="Yes — permanently. Anthropic doubled Claude Code rate limits after the SpaceX Colossus 1 deal.">
 	<meta name="theme-color" content="#080b16">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,103 +15,26 @@
 	<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-<div id="app" class="app" data-status="inactive">
+<div id="app" class="app" data-status="yes">
 <main class="container">
-	<h1 class="site-title">isclaude2x.com<span id="sim-dot" class="sim-dot" hidden></span></h1>
-	<div class="hero"><span id="hero-answer" class="hero-answer">...</span></div>
-	<p id="hero-subtitle" class="hero-subtitle"></p>
-	<p id="hero-reason" class="hero-reason"></p>
+	<h1 class="site-title">isclaude2x.com</h1>
+	<div class="hero"><span class="hero-answer">YES</span></div>
+	<p class="hero-subtitle">Claude usage is 2x — permanently</p>
+	<p class="hero-reason">Thanks to the <a href="https://www.anthropic.com/news/higher-limits-spacex" target="_blank" rel="noopener noreferrer">SpaceX × Anthropic Colossus 1 deal</a> (May 6, 2026)</p>
 
-	<div id="countdown-block" class="countdown-block">
-		<p id="countdown-label" class="countdown-label"></p>
-		<p id="countdown-value" class="countdown-value"></p>
+	<div class="deal-block">
+		<p class="deal-line"><span class="deal-key">5-hour rate limits</span><span class="deal-val">doubled</span></p>
+		<p class="deal-line"><span class="deal-key">Peak-hours reduction</span><span class="deal-val">removed (Pro &amp; Max)</span></p>
+		<p class="deal-line"><span class="deal-key">Applies to</span><span class="deal-val">Pro · Max · Team · Enterprise</span></p>
+		<p class="deal-line"><span class="deal-key">Compute</span><span class="deal-val">220K+ GPUs · 300+ MW</span></p>
 	</div>
-
-	<div id="times-section" class="times" hidden>
-		<div class="time-card">
-			<span id="tz-label" class="time-label"></span>
-			<span id="time-user" class="time-value"></span>
-		</div>
-		<div class="time-card">
-			<span class="time-label">Eastern</span>
-			<span id="time-et" class="time-value"></span>
-		</div>
-	</div>
-
-	<div id="timeline-section" class="timeline-section" hidden>
-		<p id="timeline-title" class="timeline-title"></p>
-		<div class="timeline">
-			<div id="timeline-weekday" class="timeline-bar">
-				<div class="timeline-segment segment-2x" style="width:33.33%"></div>
-				<div class="timeline-segment segment-peak" style="width:25%"></div>
-				<div class="timeline-segment segment-2x" style="width:41.67%"></div>
-			</div>
-			<div id="timeline-weekend" class="timeline-bar" hidden>
-				<div class="timeline-segment segment-2x" style="width:100%"></div>
-			</div>
-			<div id="timeline-marker" class="timeline-marker" style="left:50%">
-				<div class="timeline-marker-dot"></div>
-			</div>
-			<div id="timeline-labels-weekday" class="timeline-labels">
-				<span style="left:33.33%">8 AM</span>
-				<span style="left:58.33%">2 PM</span>
-			</div>
-			<div id="timeline-labels-weekend" class="timeline-labels" hidden>
-			</div>
-			<div id="timeline-legend" class="timeline-legend">
-				<span class="legend-item"><span class="legend-dot legend-dot-2x"></span> 2x usage</span>
-				<span class="legend-item"><span class="legend-dot legend-dot-peak"></span> Standard</span>
-			</div>
-			<p id="timeline-note" class="timeline-note" hidden>2x all day on weekends</p>
-		</div>
-	</div>
-
-	<p id="promo-period" class="promo-period" hidden>Promotion: March 13–27, 2026</p>
 
 	<footer class="footer">
-		<div class="footer-sources">Sources: <a href="https://support.claude.com/en/articles/14063676-claude-march-2026-usage-promotion" target="_blank" rel="noopener noreferrer">Claude Support</a> · <a href="https://x.com/claudeai/status/2032911277497135523" target="_blank" rel="noopener noreferrer">@claudeai tweet</a></div>
+		<div class="footer-sources">Source: <a href="https://www.anthropic.com/news/higher-limits-spacex" target="_blank" rel="noopener noreferrer">Anthropic announcement</a></div>
 		<div class="api-links">API: <a href="/short"><code>/short</code></a> · <a href="/json"><code>/json</code></a></div>
-		<div class="konami-hint">↑↑↓↓←→←→ B A</div>
 		<div class="api-links">Liked it? Follow: <a href="https://x.com/mehulmpt" target="_blank" rel="noopener noreferrer">@mehulmpt</a> · <a href="https://github.com/mehulmpt/isclaude2x" target="_blank" rel="noopener noreferrer">GitHub</a></div>
 	</footer>
 </main>
-</div>
-
-<div id="debug-panel" class="debug-panel" hidden>
-	<div class="debug-header">
-		<span class="debug-badge">DEBUG MODE</span>
-		<div class="debug-header-actions">
-			<button id="debug-live" class="debug-btn debug-btn-live" disabled>Resume Live</button>
-			<button id="debug-close" class="debug-close">&times;</button>
-		</div>
-	</div>
-	<div class="debug-controls">
-		<div class="debug-field">
-			<label class="debug-label">Date &amp; Time</label>
-			<input id="debug-date" type="datetime-local" class="debug-input" value="2026-03-18T14:00">
-		</div>
-		<div class="debug-field">
-			<label class="debug-label">Timezone</label>
-			<select id="debug-tz" class="debug-input">
-				<option value="America/New_York">New York (America/New_York)</option>
-				<option value="America/Chicago">Chicago (America/Chicago)</option>
-				<option value="America/Denver">Denver (America/Denver)</option>
-				<option value="America/Los_Angeles">Los Angeles (America/Los_Angeles)</option>
-				<option value="America/Anchorage">Anchorage (America/Anchorage)</option>
-				<option value="Pacific/Honolulu">Honolulu (Pacific/Honolulu)</option>
-				<option value="Europe/London">London (Europe/London)</option>
-				<option value="Europe/Paris">Paris (Europe/Paris)</option>
-				<option value="Europe/Berlin">Berlin (Europe/Berlin)</option>
-				<option value="Asia/Dubai">Dubai (Asia/Dubai)</option>
-				<option value="Asia/Kolkata">Kolkata (Asia/Kolkata)</option>
-				<option value="Asia/Shanghai">Shanghai (Asia/Shanghai)</option>
-				<option value="Asia/Tokyo">Tokyo (Asia/Tokyo)</option>
-				<option value="Australia/Sydney">Sydney (Australia/Sydney)</option>
-				<option value="Pacific/Auckland">Auckland (Pacific/Auckland)</option>
-				<option value="UTC">UTC (UTC)</option>
-			</select>
-		</div>
-	</div>
 </div>
 
 <script src="/client.js"></script>

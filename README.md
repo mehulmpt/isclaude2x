@@ -1,24 +1,24 @@
 # isclaude2x.com
 
-Is Claude usage currently 2x? A live status page for [Claude's March 2026 usage promotion](https://support.claude.com/en/articles/14063676-claude-march-2026-usage-promotion).
+Is Claude usage currently 2x? **Yes — permanently.**
 
 **Live at [isclaude2x.com](https://isclaude2x.com)**
 
 ## What is this?
 
-During March 13–27, 2026, Claude doubles your usage limits during off-peak hours:
+On May 6, 2026, Anthropic announced a compute partnership with SpaceX, securing all of Colossus 1 (220K+ NVIDIA GPUs, 300+ MW). Effective immediately:
 
-- **Weekdays:** 2x usage outside 5–11 AM PT / 8 AM–2 PM ET / 12–6 PM UTC
-- **Weekends:** 2x usage all day
-- **Plans:** Free, Pro, Max, Team (not Enterprise)
+- **Claude Code 5-hour rate limits doubled** for Pro, Max, Team, and seat-based Enterprise
+- **Peak-hours reduction removed** for Pro and Max
+- **Claude Opus API rate limits raised**
 
-This site tells you whether it's 2x right now, with a live countdown to the next transition.
+This page used to track Claude's temporary March 2026 2x promotion. After the SpaceX deal made 2x permanent, the answer is now `yes` forever.
 
 ## API
 
 ### `GET /short`
 
-Returns `yes` or `no` as plain text. User timezone from IP in `x-timezone` header.
+Returns `yes` as plain text. User timezone from IP in `x-timezone` header.
 
 ```
 $ curl https://isclaude2x.com/short
@@ -27,53 +27,39 @@ yes
 
 ### `GET /json`
 
-Returns full status as JSON, including time remaining for the current window.
-
 ```json
 {
 	"is2x": true,
-	"promoActive": true,
-	"isPeak": false,
-	"isWeekend": true,
-	"peakHours": "8 AM – 2 PM ET (weekdays only)",
-	"promoPeriod": "March 13–27, 2026",
-	"currentTimeET": "9:50 AM",
+	"permanent": true,
+	"reason": "SpaceX × Anthropic Colossus 1 compute deal",
+	"since": "2026-05-06",
+	"announcement": "https://www.anthropic.com/news/higher-limits-spacex",
+	"appliesTo": ["Pro", "Max", "Team", "Enterprise (seat-based)"],
 	"currentTimeUser": "7:20 PM",
-	"currentDay": "Sunday",
 	"userTimezone": "Asia/Kolkata",
-	"timestamp": "2026-03-15T13:50:46.402Z",
-	"2xWindowExpiresInSeconds": 79753,
-	"2xWindowExpiresIn": "22h 09m 13s",
-	"standardWindowExpiresInSeconds": null,
-	"standardWindowExpiresIn": null
+	"timestamp": "2026-05-07T13:50:46.402Z"
 }
 ```
 
 ## Tech stack
 
-- **Cloudflare Worker** — fully server-side rendered, no build step, no static assets
-- **TypeScript** — shared core logic between worker and tests
-- **dayjs** — timezone-aware date handling on the server
-- **Vanilla JS** — minimal inline client script for live clock ticking and debug mode
-- **IP geolocation** — `request.cf.timezone` for automatic timezone detection
-
-## Debug mode
-
-Enter the Konami code on the homepage (`↑↑↓↓←→←→ B A`) to open a debug panel. Simulate any date, time, and timezone to see what the status would be.
+- **Cloudflare Worker** — fully server-side, no build step
+- **TypeScript** — for the worker
+- **Vanilla JS** — minimal client-side script just to set the favicon
+- **IP geolocation** — `request.cf.timezone` for the JSON endpoint
 
 ## Development
 
 ```bash
 pnpm install
-pnpm test          # run 150 vitest unit tests
+pnpm test          # vitest unit tests
 wrangler dev       # local dev server
 wrangler deploy    # deploy to Cloudflare
 ```
 
 ## Sources
 
-- [Claude Support: March 2026 usage promotion](https://support.claude.com/en/articles/14063676-claude-march-2026-usage-promotion)
-- [@claudeai tweet](https://x.com/claudeai/status/2032911277497135523)
+- [Anthropic: Higher usage limits and a compute deal with SpaceX](https://www.anthropic.com/news/higher-limits-spacex)
 
 ## Author
 
